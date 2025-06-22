@@ -18,7 +18,7 @@ public class OpenAIController {
     @GetMapping("api/{message}")
     public String GetResponse(@PathVariable String message) {
         String response = openAiChatModel.call(message);
-        System.out.println("Hello");
+        System.out.println("Hello how r u i am good");
         return response;
     }
 }
