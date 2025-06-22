@@ -23,7 +23,7 @@ public class OpenAIController {
                 .prompt(message)
                 .call().chatResponse();
 
-        System.out.println(chatResponse.getMetadata().getModel());
+        System.out.println("Model is " + chatResponse.getMetadata().getModel());
 
         String response = chatResponse
                 .getResult()
