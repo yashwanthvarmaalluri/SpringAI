@@ -9,10 +9,14 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.ai.document.Document;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +26,9 @@ public class OpenAIController {
 
     @Autowired
     private EmbeddingModel embeddingModel;
+
+    @Autowired
+    private VectorStore vectorStore;
 
 //    public OpenAIController(OpenAiChatModel openAiChatModel) {
 //        this.chatClient = ChatClient.create(openAiChatModel);
@@ -105,4 +112,27 @@ public class OpenAIController {
 
         return dotProduct*100 / (Math.sqrt(norm1) * Math.sqrt(norm2));
     }
+
+    @PostMapping("api/product")
+    public List<Document> getProducts(@RequestParam String text){
+
+//        return vectorStore.similaritySearch(text);
+        return vectorStore.similaritySearch(SearchRequest.builder().query(text).topK(2).build());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
