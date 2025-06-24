@@ -21,6 +21,8 @@ public class AudioGenController {
     @PostMapping("api/stt")
     public String speechToText(@RequestParam MultipartFile file) {
 
+        //return audioModel.call(file.getResource()); This one does the job , but to get the timestamps we need to write the below code
+
         OpenAiAudioTranscriptionOptions options = OpenAiAudioTranscriptionOptions.builder()
                 .responseFormat(OpenAiAudioApi.TranscriptResponseFormat.SRT)
                 .build();
@@ -28,7 +30,6 @@ public class AudioGenController {
         AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(file.getResource(), options);
 
         return audioModel.call(prompt).getResult().getOutput();
-
 
     }
 }
