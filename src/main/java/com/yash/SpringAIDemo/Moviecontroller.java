@@ -30,30 +30,26 @@ public class Moviecontroller {
         this.chatClient = ChatClient.create(openAiChatModel);
     }
 
-//    @GetMapping("movies")
-//    public List<String> getMovies(@RequestParam String text) {
-//
-//        String message = """
-//                List of Top 5 movies of {text} and in the format
-//                {format}
-//                """;
-//
-//        ListOutputConverter opCon = new ListOutputConverter(new DefaultConversionService());
-//
-//        Object renderer = null;
-//        PromptTemplate template =
-//                new PromptTemplate(message,Map.of("text",text,"format",opCon.getFormat()));
-//
-//        Prompt prompt = template.create();
-//        return opCon.convert(chatClient.prompt(prompt).call().content());
-//    }
-// Not working
-
     @GetMapping("movies")
     public List<String> getMovies(@RequestParam String text) {
+
+        String message = """
+                List of Top 5 movies of {text} and in the format
+                {format}
+                """;
+
         ListOutputConverter opCon = new ListOutputConverter(new DefaultConversionService());
 
-        // Manually format the full prompt without using PromptTemplate variables
+
+        PromptTemplate promptTemplate = new PromptTemplate(message);
+        Prompt prompt = promptTemplate.create(Map.of("text", text, "format", opCon.getFormat() ));
+        return opCon.convert(chatClient.prompt(prompt).call().content());
+    }
+
+    @GetMapping("movies2")
+    public List<String> getMovies2(@RequestParam String text) {
+        ListOutputConverter opCon = new ListOutputConverter(new DefaultConversionService());
+
         String message = "List of Top 5 movies of " + text + "\n" + opCon.getFormat();
 
         Prompt prompt = new Prompt(message);
