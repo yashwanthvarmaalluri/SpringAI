@@ -3,6 +3,7 @@ package com.yash.SpringAIDemo;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
@@ -57,6 +58,18 @@ public class Moviecontroller {
         Prompt prompt = new Prompt(message);
 
         return opCon.convert(chatClient.prompt(prompt).call().content());
+    }
+
+    @GetMapping("movie")
+    public Movie getMovie(@RequestParam String hero) {
+              BeanOutputConverter<Movie> opCon = new BeanOutputConverter<>(Movie.class);
+        String message = "best  movie of " + hero  + opCon.getFormat();
+
+        Prompt prompt = new Prompt(message);
+
+        return opCon.convert(chatClient.prompt(prompt).call().content());
+
+
     }
 
 }
